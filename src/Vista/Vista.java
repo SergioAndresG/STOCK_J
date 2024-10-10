@@ -1,16 +1,15 @@
 package Vista;
 
 import javax.swing.JOptionPane;
+//vista
 
 public class Vista {
 
     public String mostrarMenu() {
         String menu = "1. Insertar Producto\n" +
                 "2. Buscar Producto por ID\n" +
-                "3. Actualizar Producto\n" +
-                "4. Eliminar Producto\n" +
-                "5. Mostrar Todos los Productos\n" +
-                "6. Salir\n" +
+                "3. Mostrar Todos los Productos\n" +
+                "4. Salir\n" +
                 "Elige una opción:";
         return JOptionPane.showInputDialog(menu);  // Mostrar el menú y capturar la opción elegida
     }

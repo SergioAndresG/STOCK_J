@@ -5,6 +5,7 @@ import Modelo.gestionProductos;
 import Vista.Vista;
 
 import java.util.List;
+//controlador
 
 public class Controlador {
     private gestionProductos modelo;
@@ -27,15 +28,9 @@ public class Controlador {
                     this.buscarProductoPorId();
                     break;
                 case "3":
-                    this.actualizarProducto();
-                    break;
-                case "4":
-                    this.eliminarProducto();
-                    break;
-                case "5":
                     this.mostrarProductos();
                     break;
-                case "6":
+                case "4":
                     salir = true;
                     this.vista.mostrarMensaje("Gracias por usar el sistema");
                     break;
@@ -68,32 +63,6 @@ public class Controlador {
         }
     }
 
-    private void actualizarProducto() {
-        int id = this.vista.pedirId();
-        Producto producto = this.modelo.buscarProductoPorId(id);
-        if (producto != null) {
-            producto.setNombre(this.vista.pedirNombre());
-            producto.setCantidad(this.vista.pedirCantidad());
-            producto.setPrecio(this.vista.pedirPrecio());
-            producto.setGestionadoPor(this.vista.pedirIdUsuario());
-            if (this.modelo.actualizarProducto(producto)) {
-                this.vista.mostrarMensaje("Producto actualizado correctamente");
-            } else {
-                this.vista.mostrarMensaje("Error al actualizar el producto");
-            }
-        } else {
-            this.vista.mostrarMensaje("Producto no encontrado");
-        }
-    }
-
-    private void eliminarProducto() {
-        int id = this.vista.pedirId();
-        if (this.modelo.eliminarProducto(id)) {
-            this.vista.mostrarMensaje("Producto eliminado correctamente");
-        } else {
-            this.vista.mostrarMensaje("Error al eliminar el producto");
-        }
-    }
 
     private void mostrarProductos() {
         List<Producto> productos = this.modelo.obtenerTodosLosProductos();

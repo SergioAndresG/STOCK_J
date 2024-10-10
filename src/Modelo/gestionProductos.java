@@ -3,6 +3,7 @@ package Modelo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+//gestionproductos
 
 public class gestionProductos {
     Conexion cnn = new Conexion();
@@ -46,36 +47,6 @@ public class gestionProductos {
             System.out.println("Error al buscar: " + e);
         }
         return p;
-    }
-
-    public boolean actualizarProducto(Producto p) {
-        boolean resultado = false;
-        try {
-            String sql = "UPDATE productos SET nombreProducto = ?, cantidad = ?, precio = ?, gestionado_por = ? WHERE id = ?";
-            this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setString(1, p.getNombre());
-            this.ps.setInt(2, p.getCantidad());
-            this.ps.setFloat(3, p.getPrecio());
-            this.ps.setInt(4, p.getGestionadoPor());
-            this.ps.setInt(5, p.getId());
-            resultado = this.ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Error al actualizar: " + e);
-        }
-        return resultado;
-    }
-
-    public boolean eliminarProducto(int id) {
-        boolean resultado = false;
-        try {
-            String sql = "DELETE FROM productos WHERE id = ?";
-            this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setInt(1, id);
-            resultado = this.ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar: " + e);
-        }
-        return resultado;
     }
 
     public List<Producto> obtenerTodosLosProductos() {

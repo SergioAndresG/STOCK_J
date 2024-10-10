@@ -2,6 +2,7 @@ package Modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+//conexion
 
 public class Conexion {
     private String db = "stock";
