@@ -9,6 +9,6 @@ public class Main {
         gestionProductos Modelo = new gestionProductos();
         Vista vista = new Vista();
         Controlador controlador = new Controlador(Modelo, vista);
-        controlador.mostrarMenu();
+        controlador.ejecutarMenu();
     }
 }

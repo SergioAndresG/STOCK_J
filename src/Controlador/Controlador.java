@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.Producto;
+import Modelo.Usuario;
 import Modelo.gestionProductos;
 import Vista.Vista;
 
@@ -13,32 +14,68 @@ public class Controlador {
         this.vista = vista;
     }
 
-    public void mostrarMenu() {
-        boolean salir = false;
+    public void ejecutarMenu() {
+        while (true) {
+            String tipoUsuario = vista.obtenerTipoUsuario();
+            String contraseña = vista.obtenerContraseñaUsuario();
 
-        while(!salir) {
-            switch (this.vista.mostrarMenu()) {
-                case "1":
-                    this.insertarProducto();
-                    break;
-                case "2":
-                    this.buscarProducto();
-                    break;
-                case "3":
-                    this.actualizarProducto();
-                    break;
-                case "4":
-                    this.eliminarProducto();
-                    break;
-                case "5":
-                    salir = true;
-                    this.vista.mostrarMensaje("Gracias por usar el sistema");
-                    break;
-                default:
-                    this.vista.mostrarMensaje("Opción no válida, intente de nuevo");
+            Usuario usuario = modelo.buscarUsuarioPorRolYContraseña(tipoUsuario, contraseña);
+            if (usuario == null) {
+                vista.mostrarMensaje("Tipo de usuario o contraseña incorrecta");
+                continue;
             }
-        }
 
+            vista.mostrarMensaje("¡Bienvenido, " + tipoUsuario + "!");
+            int opcion;
+            do {
+                opcion = vista.mostrarMenu(tipoUsuario);
+                manejarOpcionMenu(tipoUsuario, opcion);
+            } while (opcion != 5);
+        }
+    }
+
+
+    public void manejarOpcionMenu(String tipoUsuario, int opcion) {
+        switch (tipoUsuario) {
+            case "jefe":
+                switch (opcion) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        vista.mostrarMensaje("Saliendo del menú");
+                        break;
+                    default:
+                        vista.mostrarMensaje("Opción no válida");
+                        break;
+                }
+                break;
+            case "administrador":
+            case "empleado":
+                switch (opcion) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        vista.mostrarMensaje("Saliendo del menú");
+                        break;
+                    default:
+                        vista.mostrarMensaje("Opción no válida");
+                        break;
+                }
+                break;
+            default:
+                vista.mostrarMensaje("Tipo de usuario no reconocido");
+                break;
+        }
     }
 
     private void insertarProducto() {

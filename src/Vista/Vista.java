@@ -7,11 +7,6 @@ public class Vista {
     public Vista() {
     }
 
-    public String mostrarMenu() {
-        String menu = "Seleccione una opción:\n1. Insertar producto\n2. Buscar producto\n3. Actualizar producto\n4. Eliminar producto\n5. Salir\n";
-        return JOptionPane.showInputDialog(menu);
-    }
-
     public String pedirReferencia() {
         return JOptionPane.showInputDialog("Ingrese la referencia del producto:");
     }
@@ -28,11 +23,30 @@ public class Vista {
         return Integer.parseInt(JOptionPane.showInputDialog("Ingrese la categoría del producto (número):"));
     }
 
+    public String obtenerTipoUsuario() {
+        return JOptionPane.showInputDialog("Inserta el tipo de usuario que eres:");
+    }
+
+    public String obtenerContraseñaUsuario() {
+        return JOptionPane.showInputDialog("Ingresa la contraseña:");
+    }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog((Component)null, mensaje);
     }
 
     public void mostrarProducto(String producto) {
         JOptionPane.showMessageDialog((Component)null, producto);
+    }
+
+    public int mostrarMenu(String tipoUsuario) {
+        String[] opciones = tipoUsuario.equals("jefe") ?
+                new String[]{"Agregar Usuario", "Actualizar Usuario", "Eliminar Usuario", "Mostrar Usuarios", "Salir del menu"} :
+                new String[]{"Buscar Usuario", "Actualizar Usuario", "Mostrar Usuarios", "Salir del menu"};
+
+        String opcion = (String) JOptionPane.showInputDialog(null, "Seleccione una opción:", "Menú",
+                JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+
+        return opcion != null ? java.util.Arrays.asList(opciones).indexOf(opcion) + 1 : 5;
     }
 }

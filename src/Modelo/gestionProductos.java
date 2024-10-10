@@ -116,4 +116,33 @@ public class gestionProductos {
 
         return resultado;
     }
+
+    public Usuario buscarUsuarioPorRolYContraseña(String nombreRol, String contraseña) {
+        String query = "SELECT u.* FROM Usuarios u " +
+                "JOIN Roles r ON u.rol_id = r.id " +
+                "WHERE r.nombreRol = ? AND u.contraseña = ?";
+
+        try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+            stmt.setString(1, nombreRol);
+            stmt.setString(2, contraseña);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nombre_usuario"),
+                        rs.getString("documento"),
+                        rs.getString("correoElectronico"),
+                        rs.getString("contraseña"),
+                        rs.getInt("rol_id"),
+                        rs.getString("nombreEmprendimiento")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

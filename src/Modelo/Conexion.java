@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Conexion {
-    private String db = "productos";
+    private String db = "STOCK";
     private String url;
     private String user;
     private String pass;
@@ -13,7 +13,7 @@ public class Conexion {
     public Conexion() {
         this.url = "jdbc:mysql://localhost:3306/" + this.db;
         this.user = "root";
-        this.pass = "123456";
+        this.pass = "larata420";
         this.conec = null;
     }
 
