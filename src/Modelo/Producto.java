@@ -1,62 +1,65 @@
 package Modelo;
 
 public class Producto {
-    private String Referencia;
-    private String Nombre;
-    private float Precio;
-    private int Categoria;
+    private int id; // Este campo representa el id auto-incremental
+    private String nombreProducto;
+    private int cantidad; // Este campo refleja el stock del producto
+    private float precio;
+    private int gestionadoPor; // Campo que refleja quién gestiona el producto
 
     public Producto() {
     }
 
-    public Producto(String Referencia, String Nombre,float Precio, int Categoria) {
-        this.Referencia = Referencia;
-        this.Nombre = Nombre;
-        this.Precio = Precio;
-        this.Categoria = Categoria;
-
+    public Producto(int id, String nombreProducto, int cantidad, float precio, int gestionadoPor) {
+        this.id = id;
+        this.nombreProducto = nombreProducto;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.gestionadoPor = gestionadoPor;
     }
 
-
-    public String getReferencia() {
-        return Referencia;
+    public Producto(String nombre, int cantidad, float precio, int gestionadoPor) {
     }
 
-    public void setReferencia(String referencia) {
-        Referencia = referencia;
+    public int getId() {
+        return id;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setNombre(String nombre) {
-        Nombre = nombre;
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public float getPrecio() {
-        return Precio;
+        return precio;
     }
 
     public void setPrecio(float precio) {
-        Precio = precio;
+        this.precio = precio;
     }
 
-    public int getCategoria() {
-        return Categoria;
+    public int getGestionadoPor() {
+        return gestionadoPor;
     }
 
-    public void setCategoria(int categoria) {
-        Categoria = categoria;
+    public void setGestionadoPor(int gestionadoPor) {
+        this.gestionadoPor = gestionadoPor;
     }
 
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "Referencia='" + Referencia + '\'' +
-                ", Nombre='" + Nombre + '\'' +
-                ", Precio=" + Precio +
-                ", Categoria=" + Categoria +
-                '}';
-    }
+
 }

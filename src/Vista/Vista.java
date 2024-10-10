@@ -12,20 +12,24 @@ public class Vista {
         return JOptionPane.showInputDialog(menu);
     }
 
-    public String pedirReferencia() {
-        return JOptionPane.showInputDialog("Ingrese la referencia del producto:");
+    public int pedirId() {
+        return Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del producto:"));
     }
 
     public String pedirNombre() {
         return JOptionPane.showInputDialog("Ingrese el nombre del producto:");
     }
 
+    public int pedirCantidad() {
+        return Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad del producto:"));
+    }
+
     public float pedirPrecio() {
         return Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio del producto:"));
     }
 
-    public int pedirCategoria() {
-        return Integer.parseInt(JOptionPane.showInputDialog("Ingrese la categoría del producto (número):"));
+    public int pedirGestionadoPor() {
+        return Integer.parseInt(JOptionPane.showInputDialog("Ingrese el ID del usuario que gestiona el producto:"));
     }
 
     public void mostrarMensaje(String mensaje) {

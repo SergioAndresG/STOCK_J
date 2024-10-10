@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -23,28 +22,22 @@ public class gestionProductos {
         this.res = null;
         this.ps = null;
         this.datos = new HashMap();
-        this.conexion = (new Conexion()).Conecta();
     }
 
     public boolean insertarProducto(Producto p) {
         boolean resultado = false;
-        Producto pb = this.BuscarReferencia(p.getReferencia());
 
         try {
-            if (pb == null) {
-                String sql = "insert into productos value(?,?,?,?)";
-                this.ps = this.conexion.prepareStatement(sql);
-                this.ps.setString(1, p.getReferencia());
-                this.ps.setString(2, p.getNombre());
+                String sql = "INSERT INTO productos (nombreProducto, cantidad, precio, gestionado_por) VALUES (?, ?, ?, ?)";
+                this.ps.setString(1, p.getNombreProducto());
+                this.ps.setInt(2, p.getCantidad());
                 this.ps.setFloat(3, p.getPrecio());
-                this.ps.setInt(4, p.getCategoria());
+                this.ps.setInt(4, p.getGestionadoPor());
                 resultado = this.ps.executeUpdate() > 0;
                 if (resultado) {
-                    this.datos.put(p.getReferencia(), p);
+                    this.datos.put(String.valueOf(p.getId()), p);
                 }
-            } else {
-                System.out.println("El producto ya esta registrado");
-            }
+
         } catch (SQLException var5) {
             SQLException ex = var5;
             System.out.println("error al insertar: " + String.valueOf(ex));
@@ -53,17 +46,26 @@ public class gestionProductos {
         return resultado;
     }
 
-    public Producto BuscarReferencia(String ref) {
+    public Producto BuscarPorId(String id) {
         Producto p = null;
 
         try {
-            String sql = "select * from productos where Referencia=?";
+            String sql = "select * from productos where id=?";
             this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setString(1, ref);
+            this.ps.setString(1, id);
+            this.res = this.ps.executeQuery();
 
-            for(this.res = this.ps.executeQuery(); this.res.next(); p = new Producto(this.res.getString(1), this.res.getString(2), this.res.getFloat(3), this.res.getInt(4))) {
+            if (this.res.next()) {
+                p = new Producto(
+                        this.res.getInt("id"),
+                        this.res.getString("nombreProducto"),
+                        this.res.getInt("cantidad"),
+                        this.res.getFloat("precio"),
+                        this.res.getInt("gestionado_por")
+                );
             }
-        } catch (SQLException var4) {
+        } catch (SQLException ex) {
+            System.out.println("Error al buscar referencia: " + ex.getMessage());
         }
 
         return p;
@@ -73,22 +75,17 @@ public class gestionProductos {
         boolean resultado = false;
 
         try {
-            Producto pb = this.BuscarReferencia(p.getReferencia());
-            if (pb == null) {
-                String sql = "UPDATE productos SET Nombre=?, Precio=?, Categoria=? WHERE Referencia=?";
+                String sql = "UPDATE productos SET nombreProducto=?, cantidad=?, precio=?, gestionado_por=? WHERE id=?";
                 this.conexion.prepareStatement(sql);
                 PreparedStatement ps = this.conexion.prepareStatement(sql);
-                ps.setString(1, p.getNombre());
-                ps.setFloat(2, p.getPrecio());
-                ps.setInt(3, p.getCategoria());
-                ps.setString(4, p.getReferencia());
+                ps.setString(1, p.getNombreProducto());
+                ps.setInt(2, p.getCantidad());
+                ps.setFloat(3, p.getPrecio());
+                ps.setInt(4, p.getGestionadoPor());
                 resultado = ps.executeUpdate() > 0;
                 if (resultado) {
-                    this.datos.put(p.getReferencia(), p);
+                    this.datos.put(String.valueOf(p.getId()), p);
                 }
-            } else {
-                System.out.println("El producto ya se ha actualizado");
-            }
         } catch (SQLException var6) {
             SQLException ex = var6;
             System.out.println("Error al actualizar: " + String.valueOf(ex));
@@ -97,16 +94,16 @@ public class gestionProductos {
         return resultado;
     }
 
-    public boolean eliminarProducto(String ref) {
+    public boolean eliminarProducto(String id) {
         boolean resultado = false;
 
         try {
-            String sql = "DELETE FROM productos WHERE Referencia=?";
+            String sql = "DELETE FROM productos WHERE id=?";
             this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setString(1, ref);
+            this.ps.setString(1, id);
             resultado = this.ps.executeUpdate() > 0;
             if (resultado) {
-                this.datos.remove(ref);
+                this.datos.remove(id);
                 System.out.println("El producto se ha eliminado ");
             }
         } catch (SQLException var4) {

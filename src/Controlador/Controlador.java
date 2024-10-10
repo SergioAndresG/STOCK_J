@@ -42,11 +42,12 @@ public class Controlador {
     }
 
     private void insertarProducto() {
-        String ref = this.vista.pedirReferencia();
         String nombre = this.vista.pedirNombre();
+        int cantidad = this.vista.pedirCantidad();
         float precio = this.vista.pedirPrecio();
-        int categoria = this.vista.pedirCategoria();
-        Producto p = new Producto(ref, nombre, precio, categoria);
+        int gestionadoPor = this.vista.pedirGestionadoPor();
+
+        Producto p = new Producto(nombre, cantidad, precio, gestionadoPor);
         if (this.modelo.insertarProducto(p)) {
             this.vista.mostrarMensaje("Producto insertado correctamente");
         } else {
@@ -56,8 +57,8 @@ public class Controlador {
     }
 
     private void buscarProducto() {
-        String ref = this.vista.pedirReferencia();
-        Producto producto = this.modelo.BuscarReferencia(ref);
+        int id = this.vista.pedirId();
+        Producto producto = this.modelo.BuscarPorId(id);
         if (producto != null) {
             this.vista.mostrarProducto(producto.toString());
         } else {
@@ -67,12 +68,14 @@ public class Controlador {
     }
 
     private void actualizarProducto() {
-        String ref = this.vista.pedirReferencia();
-        Producto producto = this.modelo.BuscarReferencia(ref);
+        int id = this.vista.pedirId();
+        Producto producto = this.modelo.BuscarPorId(String.valueOf(id));
         if (producto != null) {
-            producto.setNombre(this.vista.pedirNombre());
+            producto.setNombreProducto(this.vista.pedirNombre());
+            producto.setCantidad(this.vista.pedirCantidad());
             producto.setPrecio(this.vista.pedirPrecio());
-            producto.setCategoria(this.vista.pedirCategoria());
+            producto.setGestionadoPor(this.vista.pedirGestionadoPor());
+
             if (this.modelo.actualizarProducto(producto)) {
                 this.vista.mostrarMensaje("Producto actualizado correctamente");
             } else {
@@ -85,8 +88,8 @@ public class Controlador {
     }
 
     private void eliminarProducto() {
-        String ref = this.vista.pedirReferencia();
-        if (this.modelo.eliminarProducto(ref)) {
+        int id = this.vista.pedirId();
+        if (this.modelo.eliminarProducto(String.valueOf(id)){
             this.vista.mostrarMensaje("Producto eliminado correctamente");
         } else {
             this.vista.mostrarMensaje("Error al eliminar el producto");

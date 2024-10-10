@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Conexion {
-    private String db = "productos";
+    private String db = "STOCK_J";
     private String url;
     private String user;
     private String pass;
