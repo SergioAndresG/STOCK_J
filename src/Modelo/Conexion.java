@@ -4,16 +4,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Conexion {
-    private String db = "productos";
+    private String db = "stock";
     private String url;
     private String user;
     private String pass;
     Connection conec;
 
     public Conexion() {
-        this.url = "jdbc:mysql://localhost:3306/" + this.db;
+        this.url = "jdbc:mysql://localhost:3306/stock";
         this.user = "root";
-        this.pass = "123456";
+        this.pass = "camila1034";
         this.conec = null;
     }
 

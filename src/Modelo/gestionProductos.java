@@ -1,119 +1,98 @@
 package Modelo;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.util.List;
 
 public class gestionProductos {
     Conexion cnn = new Conexion();
     Connection conexion;
-    Statement st;
-    ResultSet res;
     PreparedStatement ps;
-    HashMap<String, Producto> datos;
+    ResultSet res;
 
     public gestionProductos() {
         this.conexion = this.cnn.Conecta();
-        this.st = null;
-        this.res = null;
-        this.ps = null;
-        this.datos = new HashMap();
-        this.conexion = (new Conexion()).Conecta();
     }
 
     public boolean insertarProducto(Producto p) {
         boolean resultado = false;
-        Producto pb = this.BuscarReferencia(p.getReferencia());
-
         try {
-            if (pb == null) {
-                String sql = "insert into productos value(?,?,?,?)";
-                this.ps = this.conexion.prepareStatement(sql);
-                this.ps.setString(1, p.getReferencia());
-                this.ps.setString(2, p.getNombre());
-                this.ps.setFloat(3, p.getPrecio());
-                this.ps.setInt(4, p.getCategoria());
-                resultado = this.ps.executeUpdate() > 0;
-                if (resultado) {
-                    this.datos.put(p.getReferencia(), p);
-                }
-            } else {
-                System.out.println("El producto ya esta registrado");
-            }
-        } catch (SQLException var5) {
-            SQLException ex = var5;
-            System.out.println("error al insertar: " + String.valueOf(ex));
+            String sql = "INSERT INTO productos (nombreProducto, cantidad, precio, gestionado_por) VALUES (?, ?, ?, ?)";
+            this.ps = this.conexion.prepareStatement(sql);
+            this.ps.setString(1, p.getNombre());
+            this.ps.setInt(2, p.getCantidad()); // Cantidad
+            this.ps.setFloat(3, p.getPrecio()); // Precio
+            this.ps.setInt(4, p.getGestionadoPor()); // ID del usuario que gestiona el producto
+            resultado = this.ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al insertar: " + e);
         }
-
         return resultado;
     }
 
-    public Producto BuscarReferencia(String ref) {
+    public Producto buscarProductoPorId(int id) {
         Producto p = null;
-
         try {
-            String sql = "select * from productos where Referencia=?";
+            String sql = "SELECT * FROM productos WHERE id = ?";
             this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setString(1, ref);
+            this.ps.setInt(1, id);
+            this.res = this.ps.executeQuery();
 
-            for(this.res = this.ps.executeQuery(); this.res.next(); p = new Producto(this.res.getString(1), this.res.getString(2), this.res.getFloat(3), this.res.getInt(4))) {
+            if (res.next()) {
+                p = new Producto(res.getInt("id"), res.getString("nombreProducto"),
+                        res.getFloat("precio"), res.getInt("cantidad"), res.getInt("gestionado_por"));
             }
-        } catch (SQLException var4) {
+        } catch (SQLException e) {
+            System.out.println("Error al buscar: " + e);
         }
-
         return p;
     }
 
     public boolean actualizarProducto(Producto p) {
         boolean resultado = false;
-
         try {
-            Producto pb = this.BuscarReferencia(p.getReferencia());
-            if (pb == null) {
-                String sql = "UPDATE productos SET Nombre=?, Precio=?, Categoria=? WHERE Referencia=?";
-                this.conexion.prepareStatement(sql);
-                PreparedStatement ps = this.conexion.prepareStatement(sql);
-                ps.setString(1, p.getNombre());
-                ps.setFloat(2, p.getPrecio());
-                ps.setInt(3, p.getCategoria());
-                ps.setString(4, p.getReferencia());
-                resultado = ps.executeUpdate() > 0;
-                if (resultado) {
-                    this.datos.put(p.getReferencia(), p);
-                }
-            } else {
-                System.out.println("El producto ya se ha actualizado");
-            }
-        } catch (SQLException var6) {
-            SQLException ex = var6;
-            System.out.println("Error al actualizar: " + String.valueOf(ex));
+            String sql = "UPDATE productos SET nombreProducto = ?, cantidad = ?, precio = ?, gestionado_por = ? WHERE id = ?";
+            this.ps = this.conexion.prepareStatement(sql);
+            this.ps.setString(1, p.getNombre());
+            this.ps.setInt(2, p.getCantidad());
+            this.ps.setFloat(3, p.getPrecio());
+            this.ps.setInt(4, p.getGestionadoPor());
+            this.ps.setInt(5, p.getId());
+            resultado = this.ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("Error al actualizar: " + e);
         }
-
         return resultado;
     }
 
-    public boolean eliminarProducto(String ref) {
+    public boolean eliminarProducto(int id) {
         boolean resultado = false;
-
         try {
-            String sql = "DELETE FROM productos WHERE Referencia=?";
+            String sql = "DELETE FROM productos WHERE id = ?";
             this.ps = this.conexion.prepareStatement(sql);
-            this.ps.setString(1, ref);
+            this.ps.setInt(1, id);
             resultado = this.ps.executeUpdate() > 0;
-            if (resultado) {
-                this.datos.remove(ref);
-                System.out.println("El producto se ha eliminado ");
-            }
-        } catch (SQLException var4) {
-            SQLException ex = var4;
-            System.out.println("Error al eliminar: " + String.valueOf(ex));
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar: " + e);
         }
-
         return resultado;
+    }
+
+    public List<Producto> obtenerTodosLosProductos() {
+        List<Producto> productos = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM productos";
+            this.ps = this.conexion.prepareStatement(sql);
+            this.res = this.ps.executeQuery();
+
+            while (res.next()) {
+                Producto p = new Producto(res.getInt("id"), res.getString("nombreProducto"),
+                        res.getFloat("precio"), res.getInt("cantidad"), res.getInt("gestionado_por"));
+                productos.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener productos: " + e);
+        }
+        return productos;
     }
 }

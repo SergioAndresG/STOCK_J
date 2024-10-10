@@ -1,62 +1,69 @@
 package Modelo;
 
 public class Producto {
-    private String Referencia;
-    private String Nombre;
-    private float Precio;
-    private int Categoria;
+    private int id;
+    private String nombre;
+    private float precio;
+    private int cantidad;
+    private int gestionadoPor;  // Campo nuevo para el ID del usuario que gestiona el producto
 
-    public Producto() {
+    public Producto(int id, String nombre, float precio, int cantidad, int gestionadoPor) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.gestionadoPor = gestionadoPor;
     }
 
-    public Producto(String Referencia, String Nombre,float Precio, int Categoria) {
-        this.Referencia = Referencia;
-        this.Nombre = Nombre;
-        this.Precio = Precio;
-        this.Categoria = Categoria;
-
+    // Getters y setters
+    public int getId() {
+        return id;
     }
 
-
-    public String getReferencia() {
-        return Referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        Referencia = referencia;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        Nombre = nombre;
+        this.nombre = nombre;
     }
 
     public float getPrecio() {
-        return Precio;
+        return precio;
     }
 
     public void setPrecio(float precio) {
-        Precio = precio;
+        this.precio = precio;
     }
 
-    public int getCategoria() {
-        return Categoria;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setCategoria(int categoria) {
-        Categoria = categoria;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public int getGestionadoPor() {
+        return gestionadoPor;
+    }
+
+    public void setGestionadoPor(int gestionadoPor) {
+        this.gestionadoPor = gestionadoPor;
     }
 
     @Override
     public String toString() {
         return "Producto{" +
-                "Referencia='" + Referencia + '\'' +
-                ", Nombre='" + Nombre + '\'' +
-                ", Precio=" + Precio +
-                ", Categoria=" + Categoria +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", cantidad=" + cantidad +
+                ", gestionadoPor=" + gestionadoPor +
                 '}';
     }
 }
